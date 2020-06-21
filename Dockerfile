@@ -1,6 +1,7 @@
 FROM openjdk:8-jre-slim
 
-ENV SPARK_VERSION=2.4.5
+ENV SPARK_VERSION=3.0.0
+ENV HADOOP_VERSION=2.7
 
 WORKDIR /root
 
@@ -9,9 +10,9 @@ RUN apt update -y && apt install -y tini wget && apt clean
 
 # Spark
 RUN wget https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop2.7.tgz && \
-    tar -xzvf spark-${SPARK_VERSION}-bin-hadoop2.7.tgz && \
-    mv spark-${SPARK_VERSION}-bin-hadoop2.7 spark && \
-    rm spark-${SPARK_VERSION}-bin-hadoop2.7.tgz && \
+    tar -xzvf spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}}.tgz && \
+    mv spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}} spark && \
+    rm spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}}.tgz && \
     rm -rf spark/examples spark/kubernetes && \
     wget https://storage.googleapis.com/hadoop-lib/gcs/gcs-connector-hadoop2-latest.jar && mv gcs-connector-hadoop2-latest.jar spark/jars && \
     echo export SPARK_DIST_CLASSPATH=$($HOME/hadoop/bin/hadoop classpath) | tee -a $HOME/spark/conf/spark-env.sh && chmod +x $HOME/spark/conf/spark-env.sh
